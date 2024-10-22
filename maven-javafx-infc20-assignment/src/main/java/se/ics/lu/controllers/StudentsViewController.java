@@ -9,6 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import se.ics.lu.data.DaoException;
 import se.ics.lu.data.StudentDao;
@@ -43,6 +44,9 @@ public class StudentsViewController {
     private Button btnStudentAdd;
 
     @FXML
+    private Button btnStudentDelete;
+
+    @FXML
     private Label labelErrorMessage;
 
     private StudentDao studentDao;
@@ -55,10 +59,12 @@ public class StudentsViewController {
     private void initialize() {
         try {
             studentDao = new StudentDao();
-            // Initialize table columns
+            
             columnStudentPersonalNumber.setCellValueFactory(new PropertyValueFactory<>("studentPersonalNumber"));
             columnStudentName.setCellValueFactory(new PropertyValueFactory<>("name"));
             columnStudentEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+            tableViewStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> loadStudentDetails(newValue));
 
             loadStudents();
         } catch (IOException e) {
@@ -88,14 +94,63 @@ public class StudentsViewController {
         }
     }
 
+    @FXML
+    private void btnStudentDelete_OnClick(MouseEvent event){
+        try{
+            Student student = tableViewStudent.getSelectionModel().getSelectedItem();
+            studentDao.deleteByNo(student.getStudentPersonalNumber());
+            loadStudents();
+        } catch (DaoException e){
+            displayErrorMessage(e.getMessage());
+        }
+    }
+
+    @FXML
+    private void btnStudentUpdate_OnClick(MouseEvent event) {
+        try{
+            Student student = tableViewStudent.getSelectionModel().getSelectedItem();
+            String newName = textFieldStudentName.getText();
+            String newEmail = textFieldStudentEmail.getText();
+
+            if(newName.isEmpty() || newEmail.isEmpty()){
+                displayErrorMessage("Please fill in all fields when updating");
+                return;
+            }
+
+            student.setName(newName);
+            student.setEmail(newEmail);
+
+            studentDao.update(student);
+
+            tableViewStudent.refresh();
+
+            loadStudents();
+            clearTextFields();
+            textFieldStudentName.setEditable(true);
+        } catch (DaoException e){
+            displayErrorMessage(e.getMessage());
+        }
+    }
+
     private void loadStudents(){
         clearErrorMessage();
         try{
             List<Student> students = studentDao.getAllStudents();
             ObservableList<Student> studentObservableList = FXCollections.observableArrayList(students);
             tableViewStudent.setItems(studentObservableList);
+            textFieldStudentPersonalNumber.setEditable(true);
         } catch (DaoException e){
             displayErrorMessage("Error loading students: " + e.getMessage());
+        }
+    }
+
+    private void loadStudentDetails(Student student){
+        if(student != null){
+            textFieldStudentPersonalNumber.setText(student.getStudentPersonalNumber());
+            textFieldStudentName.setText(student.getName());
+            textFieldStudentEmail.setText(student.getEmail());
+
+            textFieldStudentPersonalNumber.setEditable(false);
         }
     }
 
@@ -109,5 +164,11 @@ public class StudentsViewController {
 
     public void clearErrorMessage(){
         labelErrorMessage.setText("");
+    }
+
+    public void clearTextFields(){
+        textFieldStudentPersonalNumber.clear();
+        textFieldStudentName.clear();
+        textFieldStudentEmail.clear();
     }
 }

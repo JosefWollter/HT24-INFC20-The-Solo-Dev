@@ -36,8 +36,6 @@ public class ConnectionHandler {
             + "password=" + databaseUserPassword + ";"
             + "encrypt=true;"
             + "trustServerCertificate=true;";
-
-            System.out.println(connectionURL);
     }
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(connectionURL);

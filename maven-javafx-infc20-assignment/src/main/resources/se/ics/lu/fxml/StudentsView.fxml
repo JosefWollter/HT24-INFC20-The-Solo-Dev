@@ -24,6 +24,10 @@
         <TextField fx:id="textFieldStudentEmail" layoutX="102.0" layoutY="410.0" promptText="Email" />
         <Button fx:id="btnStudentAdd" layoutX="102.0" layoutY="458.0" mnemonicParsing="false"
             onMouseClicked="#btnStudentAdd_OnClick" text="Add Student" />
+        <Button fx:id="btnStudentDelete" layoutX="200.0" layoutY="458.0" mnemonicParsing="false"
+        onMouseClicked="#btnStudentDelete_OnClick" text="Delete Student" />
+        <Button fx:id="btnStudentUpdate" layoutX="298.0" layoutY="458.0" mnemonicParsing="false"
+        onMouseClicked="#btnStudentUpdate_OnClick" text="Update Student" />
         <Label fx:id="labelErrorMessage" layoutX="102.0" layoutY="500.0" text="" />
     </children>
 </AnchorPane>

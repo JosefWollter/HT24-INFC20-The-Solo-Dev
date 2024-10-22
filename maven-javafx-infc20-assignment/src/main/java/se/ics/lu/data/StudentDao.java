@@ -91,7 +91,7 @@ public class StudentDao {
      }
 
      public void deleteByNo(String studentPersonalNumber){
-        String callProcedure = "{CALL uspDeleteStudent}";
+        String callProcedure = "{CALL uspDeleteStudent(?)}";
 
         try (Connection connection = connectionHandler.getConnection();
             CallableStatement statement = connection.prepareCall(callProcedure)){
@@ -100,6 +100,7 @@ public class StudentDao {
 
                 statement.executeUpdate();
             } catch (SQLException e){
+                e.printStackTrace();
                 throw new DaoException("Error deleting student with personal number: " + studentPersonalNumber, e);
             }
      }
