@@ -34,6 +34,9 @@ public class StudentsViewController {
     private TextField textFieldStudentPersonalNumber;
 
     @FXML
+    private TextField textFieldStudentName;
+
+    @FXML
     private TextField textFieldStudentEmail;
 
     @FXML
@@ -53,9 +56,11 @@ public class StudentsViewController {
         try {
             studentDao = new StudentDao();
             // Initialize table columns
-            columnStudentPersonalNumber.setCellValueFactory(new PropertyValueFactory<>("personalNumber"));
+            columnStudentPersonalNumber.setCellValueFactory(new PropertyValueFactory<>("studentPersonalNumber"));
             columnStudentName.setCellValueFactory(new PropertyValueFactory<>("name"));
             columnStudentEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+            loadStudents();
         } catch (IOException e) {
             System.out.println(e.getMessage());
             displayErrorMessage("Error initializing database connection: " + e.getMessage());
@@ -64,8 +69,34 @@ public class StudentsViewController {
 
     @FXML
     private void btnStudentAdd_OnClick(MouseEvent event) {
-        // Event handler logic
-        System.out.println("Button clicked");
+        try{
+            String studentPersonalNumber = textFieldStudentPersonalNumber.getText();
+            String studentName = textFieldStudentName.getText();
+            String studentEmail = textFieldStudentEmail.getText();
+
+            Student student = new Student(studentPersonalNumber, studentName, studentEmail);
+
+            studentDao.save(student);
+
+            loadStudents();
+
+            textFieldStudentPersonalNumber.clear();
+            textFieldStudentName.clear();
+            textFieldStudentEmail.clear();
+        } catch (DaoException e){
+            displayErrorMessage(e.getMessage());
+        }
+    }
+
+    private void loadStudents(){
+        clearErrorMessage();
+        try{
+            List<Student> students = studentDao.getAllStudents();
+            ObservableList<Student> studentObservableList = FXCollections.observableArrayList(students);
+            tableViewStudent.setItems(studentObservableList);
+        } catch (DaoException e){
+            displayErrorMessage("Error loading students: " + e.getMessage());
+        }
     }
 
     public void displayErrorMessage(String message) {
@@ -76,5 +107,7 @@ public class StudentsViewController {
         }
     }
 
-    // other methods and fields
+    public void clearErrorMessage(){
+        labelErrorMessage.setText("");
+    }
 }

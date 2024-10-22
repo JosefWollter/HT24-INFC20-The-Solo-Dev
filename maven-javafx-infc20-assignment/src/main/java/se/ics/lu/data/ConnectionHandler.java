@@ -31,15 +31,15 @@ public class ConnectionHandler {
         connectionURL = "jdbc:sqlserver://"
             + databaseServerName + ":"
             + databaseServerPort + ";"
-            + "database =" + databaseName + ";"
+            + "database=" + databaseName + ";"
             + "user=" + databaseUserName + ";"
             + "password=" + databaseUserPassword + ";"
             + "encrypt=true;"
             + "trustServerCertificate=true;";
+
+            System.out.println(connectionURL);
     }
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(connectionURL);
     }
-    
-
 }

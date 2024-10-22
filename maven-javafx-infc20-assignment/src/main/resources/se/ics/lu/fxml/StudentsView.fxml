@@ -20,6 +20,7 @@
             </columnResizePolicy>
         </TableView>
         <TextField fx:id="textFieldStudentPersonalNumber" layoutX="102.0" layoutY="324.0" promptText="Personal Number"/>
+        <TextField fx:id="textFieldStudentName" layoutX="102.0" layoutY="367.0" promptText="Name" />
         <TextField fx:id="textFieldStudentEmail" layoutX="102.0" layoutY="410.0" promptText="Email" />
         <Button fx:id="btnStudentAdd" layoutX="102.0" layoutY="458.0" mnemonicParsing="false"
             onMouseClicked="#btnStudentAdd_OnClick" text="Add Student" />

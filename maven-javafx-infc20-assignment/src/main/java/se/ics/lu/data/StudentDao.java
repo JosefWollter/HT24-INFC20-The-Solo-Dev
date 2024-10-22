@@ -29,6 +29,7 @@ public class StudentDao {
                 students.add(mapToStudent(resultSet));
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DaoException("Error while fetching all students", e);
         }
         return students;
