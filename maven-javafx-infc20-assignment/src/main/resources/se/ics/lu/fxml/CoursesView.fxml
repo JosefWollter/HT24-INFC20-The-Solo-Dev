@@ -1,0 +1,43 @@
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+    prefHeight="586.0" prefWidth="739.0" xmlns="http://javafx.com/javafx/20.0.1"
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.ics.lu.controllers.CoursesViewController">
+    <children>
+        <MenuBar layoutX="0" layoutY="0">
+            <menus>
+                <Menu text="Menus">
+                    <MenuItem text="Students" onAction="#menuStudents_OnClick" />
+                </Menu>
+            </menus>
+        </MenuBar>
+        <TableView fx:id="tableViewCourse" layoutX="102.0" layoutY="101.0" prefHeight="200.0" prefWidth="559.0">
+            <columns>
+                <TableColumn fx:id="columnCourseCode" prefWidth="75.0" text="Course Code" />
+                <TableColumn fx:id="columnCourseName" prefWidth="75.0" text="Name" />
+                <TableColumn fx:id="columnCourseCredits" prefWidth="75.0" text="Credits" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
+        <TextField fx:id="textFieldCourseCode" layoutX="102.0" layoutY="324.0" promptText="CourseCode"/>
+        <TextField fx:id="textFieldCourseName" layoutX="102.0" layoutY="367.0" promptText="Name" />
+        <TextField fx:id="textFieldCourseCredits" layoutX="102.0" layoutY="410.0" promptText="Credits" />
+        <Button fx:id="btnCourseAdd" layoutX="102.0" layoutY="458.0" mnemonicParsing="false"
+            onMouseClicked="#btnCourseAdd_OnClick" text="Add Course" />
+        <Button fx:id="btnCourseDelete" layoutX="200.0" layoutY="458.0" mnemonicParsing="false"
+        onMouseClicked="#btnCourseDelete_OnClick" text="Delete Course" />
+        <Button fx:id="btnCourseUpdate" layoutX="298.0" layoutY="458.0" mnemonicParsing="false"
+        onMouseClicked="#btnCourseUpdate_OnClick" text="Update Course" />
+        <Label fx:id="labelErrorMessage" layoutX="102.0" layoutY="500.0" text="" />
+    </children>
+</AnchorPane>

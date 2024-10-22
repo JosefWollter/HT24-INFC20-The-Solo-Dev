@@ -2,7 +2,11 @@ package se.ics.lu.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -11,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import se.ics.lu.data.DaoException;
 import se.ics.lu.data.StudentDao;
 import se.ics.lu.models.Student;
@@ -45,6 +50,9 @@ public class StudentsViewController {
 
     @FXML
     private Button btnStudentDelete;
+
+    @FXML
+    private Button btnStudentUpdate;
 
     @FXML
     private Label labelErrorMessage;
@@ -126,7 +134,7 @@ public class StudentsViewController {
 
             loadStudents();
             clearTextFields();
-            textFieldStudentName.setEditable(true);
+            textFieldStudentPersonalNumber.setEditable(true);
         } catch (DaoException e){
             displayErrorMessage(e.getMessage());
         }
@@ -170,5 +178,19 @@ public class StudentsViewController {
         textFieldStudentPersonalNumber.clear();
         textFieldStudentName.clear();
         textFieldStudentEmail.clear();
+    }
+
+    public void menuCourses_OnClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/se/ics/lu/fxml/CoursesView.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) tableViewStudent.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Courses");
+            stage.show();
+        } catch (IOException e) {
+            displayErrorMessage("Error loading courses: " + e.getMessage());
+        }
     }
 }

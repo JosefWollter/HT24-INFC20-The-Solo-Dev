@@ -3,12 +3,22 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
     prefHeight="586.0" prefWidth="739.0" xmlns="http://javafx.com/javafx/20.0.1"
     xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.ics.lu.controllers.StudentsViewController">
     <children>
+        <MenuBar layoutX="0" layoutY="0">
+            <menus>
+                <Menu text="Menus">
+                    <MenuItem text="Courses" onAction="#menuCourses_OnClick" />
+                </Menu>
+            </menus>
+        </MenuBar>
         <TableView fx:id="tableViewStudent" layoutX="102.0" layoutY="101.0" prefHeight="200.0" prefWidth="559.0">
             <columns>
                 <TableColumn fx:id="columnStudentPersonalNumber" prefWidth="75.0" text="Personal Number" />
@@ -26,7 +36,7 @@
             onMouseClicked="#btnStudentAdd_OnClick" text="Add Student" />
         <Button fx:id="btnStudentDelete" layoutX="200.0" layoutY="458.0" mnemonicParsing="false"
         onMouseClicked="#btnStudentDelete_OnClick" text="Delete Student" />
-        <Button fx:id="btnStudentUpdate" layoutX="298.0" layoutY="458.0" mnemonicParsing="false"
+        <Button fx:id="btnStudentUpdate" layoutX="300.0" layoutY="458.0" mnemonicParsing="false"
         onMouseClicked="#btnStudentUpdate_OnClick" text="Update Student" />
         <Label fx:id="labelErrorMessage" layoutX="102.0" layoutY="500.0" text="" />
     </children>
