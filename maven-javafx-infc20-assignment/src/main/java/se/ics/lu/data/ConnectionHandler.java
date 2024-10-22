@@ -9,12 +9,12 @@ import java.util.Properties;
 
 public class ConnectionHandler {
     private String connectionURL;
-    private final String propertiedFilePath = "src/main/resources/config.properties";
+    private static String configFilePath = "/config.properties";
 
     public ConnectionHandler() throws IOException{
         Properties connectionProperties = new Properties();
 
-        try (InputStream inputStream = getClass().getResourceAsStream(propertiedFilePath)){
+        try (InputStream inputStream = getClass().getResourceAsStream(configFilePath)){
             if(inputStream != null){
                 connectionProperties.load(inputStream);
             } else {
