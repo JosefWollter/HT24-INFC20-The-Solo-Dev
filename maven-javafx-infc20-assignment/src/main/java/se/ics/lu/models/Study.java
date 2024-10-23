@@ -1,39 +1,42 @@
 package se.ics.lu.models;
 
 public class Study {
-    private String studentPersonalNumber;
-    private String courseCode;
     private String grade;
+    private Student student;
+    private Course course;
 
-    public Study(String studentPersonalNumber, String courseCode){
-        this.studentPersonalNumber = studentPersonalNumber;
-        this.courseCode = courseCode;
-    }
-
-    public Study(String studentPersonalNumber, String courseCode, String grade) {
-        this.studentPersonalNumber = studentPersonalNumber;
-        this.courseCode = courseCode;
+    public Study(Student student, Course course, String grade) {
+        this.student = student;
+        this.course = course;
         this.grade = grade;
     }
 
-    public String getStudentPersonalNumber() {
-        return studentPersonalNumber;
-    }
-
-    public void setStudentPersonalNumber(String studentPersonalNumber) {
-        this.studentPersonalNumber = studentPersonalNumber;
-    }
-
-    public String getCourseCode() {
-        return courseCode;
-    }
-
-    public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
+    public Study(Student student, Course course) {
+        this.student = student;
+        this.course = course;
     }
 
     public String getGrade() {
         return grade;
     }
 
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 }

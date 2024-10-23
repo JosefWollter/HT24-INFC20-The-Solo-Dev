@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import se.ics.lu.data.StudentDao;
+import se.ics.lu.models.Course;
+import se.ics.lu.models.Student;
 import se.ics.lu.models.Study;
 
 public class StudyDao {
@@ -34,6 +36,27 @@ public class StudyDao {
             return studies;
         }
 
+        public List<Study> getStudiesByCourse(String courseCode) {
+            String callProcedure = "{CALL uspGetStudiesByCourseCode(?)}";
+            List<Study> studies = new ArrayList<>();
+
+            try (Connection connection = connectionHandler.getConnection();
+                CallableStatement statement = connection.prepareCall(callProcedure)){
+                    statement.setString(1, courseCode);
+
+                    try (ResultSet resultSet = statement.executeQuery()){
+                        while (resultSet.next()){
+                            studies.add(mapToStudy(resultSet));
+                        }
+                    }
+            } catch (SQLException e){
+                e.printStackTrace();
+                throw new DaoException("Error fetching studies by course code: " + courseCode, e);
+            }
+
+            return studies;
+        }
+
         public Study getStudy(String studentPersonalNumber, String courseCode){
             String callProcedure = "{CALL uspGetStudy(?,?)}";
 
@@ -50,7 +73,7 @@ public class StudyDao {
                         }
                     }
                 } catch (SQLException e){
-                throw new DaoException("Error fetching study with student personal number: " 
+                    throw new DaoException("Error fetching study with student personal number: " 
                                         + studentPersonalNumber + " and course code: " + courseCode, e);
                 }
         }
@@ -60,8 +83,8 @@ public class StudyDao {
 
             try (Connection connection = connectionHandler.getConnection();
                 CallableStatement statement = connection.prepareCall(callProcedure)){
-                    statement.setString(1, study.getStudentPersonalNumber());
-                    statement.setString(2, study.getCourseCode());
+                    statement.setString(1, study.getStudent().getStudentPersonalNumber());
+                    statement.setString(2, study.getCourse().getCourseCode());
                     statement.execute();
             } catch (SQLException e){
                 if(e.getErrorCode() == 2627){
@@ -76,8 +99,8 @@ public class StudyDao {
 
             try (Connection connection = connectionHandler.getConnection();
                 CallableStatement statement = connection.prepareCall(callProcedure)){
-                    statement.setString(1, study.getStudentPersonalNumber());
-                    statement.setString(2, study.getCourseCode());
+                    statement.setString(1, study.getStudent().getStudentPersonalNumber());
+                    statement.setString(2, study.getCourse().getCourseCode());
                     statement.setString(3, study.getGrade());
                     statement.execute();
             } catch (SQLException e){
@@ -99,10 +122,16 @@ public class StudyDao {
         }
 
         private Study mapToStudy(ResultSet resultSet) throws SQLException {
-            return new Study(
-                resultSet.getString("StudentPersonalNo"),
-                resultSet.getString("CourseCode"),
-                resultSet.getString("Grade"));
+            try {
+                StudentDao studentDao = new StudentDao();
+                Student student = studentDao.getStudentByNumber(resultSet.getString("StudentPersonalNo"));
+                CourseDao courseDao = new CourseDao();
+                Course course = courseDao.getByCourseCode(resultSet.getString("CourseCode"));
+                return new Study(
+                    student, course,
+                    resultSet.getString("Grade"));
+            } catch (IOException e){
+                throw new DaoException("Error while mapping study", e);
+            }
         }
-
 }

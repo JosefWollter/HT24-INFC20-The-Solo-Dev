@@ -57,6 +57,9 @@ public class CoursesViewController {
     private Button btnCourseUpdate;
 
     @FXML
+    private Button btnCourseStudies;
+
+    @FXML
     private Label labelErrorMessage;
 
     private CourseDao courseDao;
@@ -177,6 +180,28 @@ public class CoursesViewController {
         textFieldCourseCode.clear();
         textFieldCourseName.clear();
         textFieldCourseCredits.clear();
+    }
+
+    public void btnCourseStudies_OnClick(MouseEvent event) {
+        try {
+            if(tableViewCourse.getSelectionModel().getSelectedItem() == null) {
+                displayErrorMessage("Please select a course to view studies");
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/se/ics/lu/fxml/StudiesView.fxml"));
+            Parent root = loader.load();
+
+            StudiesViewController studiesViewController = loader.getController();
+            studiesViewController.setCourse(tableViewCourse.getSelectionModel().getSelectedItem());
+
+            Stage stage = (Stage) tableViewCourse.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Studies");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            displayErrorMessage("Error loading Studies: " + e.getMessage());
+        }
     }
 
     public void menuStudents_OnClick(ActionEvent event) {

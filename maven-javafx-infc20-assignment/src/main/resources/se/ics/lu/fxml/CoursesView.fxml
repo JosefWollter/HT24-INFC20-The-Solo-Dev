@@ -35,9 +35,11 @@
         <Button fx:id="btnCourseAdd" layoutX="102.0" layoutY="458.0" mnemonicParsing="false"
             onMouseClicked="#btnCourseAdd_OnClick" text="Add Course" />
         <Button fx:id="btnCourseDelete" layoutX="200.0" layoutY="458.0" mnemonicParsing="false"
-        onMouseClicked="#btnCourseDelete_OnClick" text="Delete Course" />
+            onMouseClicked="#btnCourseDelete_OnClick" text="Delete Course" />
         <Button fx:id="btnCourseUpdate" layoutX="298.0" layoutY="458.0" mnemonicParsing="false"
-        onMouseClicked="#btnCourseUpdate_OnClick" text="Update Course" />
+            onMouseClicked="#btnCourseUpdate_OnClick" text="Update Course" />
+        <Button fx:id="btnCourseStudies" layoutX="398.0" layoutY="458.0" mnemonicParsing="false"
+            onMouseClicked="#btnCourseStudies_OnClick" text="Students" />
         <Label fx:id="labelErrorMessage" layoutX="102.0" layoutY="500.0" text="" />
     </children>
 </AnchorPane>

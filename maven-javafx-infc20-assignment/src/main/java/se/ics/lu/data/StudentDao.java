@@ -36,7 +36,7 @@ public class StudentDao {
      }
 
      public Student getStudentByNumber(String studentPersonalNumber){
-        String callProcedure = "{CALL uspGetStudentByStudentPersonalNo}";
+        String callProcedure = "{CALL uspGetStudentByStudentPersonalNo(?)}";
 
         try (Connection connection = connectionHandler.getConnection();
             CallableStatement statement = connection.prepareCall(callProcedure)){
