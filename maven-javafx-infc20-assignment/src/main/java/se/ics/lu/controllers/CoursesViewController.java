@@ -65,25 +65,24 @@ public class CoursesViewController {
     private CourseDao courseDao;
 
     public CoursesViewController() {
+        try {
+            courseDao = new CourseDao();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            displayErrorMessage("Error initializing database connection: " + e.getMessage());
+        }
 
     }
 
     @FXML
     private void initialize() {
-        try {
-            courseDao = new CourseDao();
-            
-            columnCourseCode.setCellValueFactory(new PropertyValueFactory<>("courseCode"));
-            columnCourseName.setCellValueFactory(new PropertyValueFactory<>("name"));
-            columnCourseCredits.setCellValueFactory(new PropertyValueFactory<>("credits"));
+        columnCourseCode.setCellValueFactory(new PropertyValueFactory<>("courseCode"));
+        columnCourseName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnCourseCredits.setCellValueFactory(new PropertyValueFactory<>("credits"));
 
-            tableViewCourse.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> loadCourseDetails(newValue));
+        tableViewCourse.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> loadCourseDetails(newValue));
 
-            loadCourses();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            displayErrorMessage("Error initializing database connection: " + e.getMessage());
-        }
+        loadCourses();
     }
 
     private void loadCourses() {
@@ -103,12 +102,13 @@ public class CoursesViewController {
         try{
             String courseCode = textFieldCourseCode.getText();
             String courseName = textFieldCourseName.getText();
-            Double courseCredits = Double.parseDouble(textFieldCourseCredits.getText());
 
-            if(courseCode.isEmpty() || courseName.isEmpty() || courseCredits == 0){
+            if(courseCode.isEmpty() || courseName.isEmpty()){
                 displayErrorMessage("Please fill in all fields when adding a course");
                 return;
             }
+
+            Double courseCredits = Double.parseDouble(textFieldCourseCredits.getText());
 
             Course course = new Course(courseCode, courseName, courseCredits);
 

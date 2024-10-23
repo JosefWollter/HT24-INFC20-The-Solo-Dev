@@ -60,25 +60,24 @@ public class StudentsViewController {
     private StudentDao studentDao;
 
     public StudentsViewController() {
-        // Constructor logic if any
-    }
-
-    @FXML
-    private void initialize() {
         try {
             studentDao = new StudentDao();
-            
-            columnStudentPersonalNumber.setCellValueFactory(new PropertyValueFactory<>("studentPersonalNumber"));
-            columnStudentName.setCellValueFactory(new PropertyValueFactory<>("name"));
-            columnStudentEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-
-            tableViewStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> loadStudentDetails(newValue));
-
-            loadStudents();
         } catch (IOException e) {
             System.out.println(e.getMessage());
             displayErrorMessage("Error initializing database connection: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void initialize() {
+        columnStudentPersonalNumber.setCellValueFactory(new PropertyValueFactory<>("studentPersonalNumber"));
+        columnStudentName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnStudentEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+        tableViewStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> loadStudentDetails(newValue));
+
+        loadStudents();
+
     }
 
     @FXML
@@ -177,6 +176,7 @@ public class StudentsViewController {
     public void displayErrorMessage(String message) {
         if (labelErrorMessage != null) {
             labelErrorMessage.setText(message);
+            labelErrorMessage.setStyle("-fx-text-fill: red");
         } else {
             System.out.println("labelErrorMessage is null");
         }
