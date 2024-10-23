@@ -9,7 +9,7 @@
     prefHeight="586.0" prefWidth="739.0" xmlns="http://javafx.com/javafx/20.0.1"
     xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.ics.lu.controllers.StudiesViewController">
     <children>
-        <Label fx:id="labelStudiesCourseCode" layoutX="102.0" layoutY="50.0" text="Course Code" />
+        <Label fx:id="labelStudiesCourseCode" layoutX="102.0" layoutY="50.0" text="" />
         <TableView fx:id="tableViewStudies" layoutX="102.0" layoutY="101.0" prefHeight="200.0" prefWidth="559.0">
             <columns>
                 <TableColumn fx:id="columnStudiesStudentPersonalNumber" prefWidth="75.0" text="Personal Number" />

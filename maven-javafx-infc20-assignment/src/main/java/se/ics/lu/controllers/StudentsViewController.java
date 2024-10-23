@@ -119,7 +119,10 @@ public class StudentsViewController {
             Student student = tableViewStudent.getSelectionModel().getSelectedItem();
             String newName = textFieldStudentName.getText();
             String newEmail = textFieldStudentEmail.getText();
-
+            if(student == null){
+                displayErrorMessage("Please select a student to update");
+                return;
+            }
             if(newName.isEmpty() || newEmail.isEmpty()){
                 displayErrorMessage("Please fill in all fields when updating");
                 return;

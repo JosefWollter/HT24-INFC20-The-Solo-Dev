@@ -68,7 +68,10 @@ public class StudentDao {
             } catch (SQLException e){
                 if (e.getErrorCode() == 2627) {
                     throw new DaoException("A student with this personal number already exists", e);
+                } else if (e.getErrorCode() == 547) {
+                    throw new DaoException("Please enter a valid personal number and email", e);
                 } else {
+                    System.out.println(e.getErrorCode());
                     throw new DaoException("Error saving student: " + student.getStudentPersonalNumber(), e);
                 }
             }
@@ -79,14 +82,17 @@ public class StudentDao {
 
         try (Connection connection = connectionHandler.getConnection();
             CallableStatement statement = connection.prepareCall(callProcedure)){
-
                 statement.setString(1, student.getStudentPersonalNumber());
                 statement.setString(2, student.getName());
                 statement.setString(3, student.getEmail());
 
                 statement.executeUpdate();
             } catch (SQLException e){
-                throw new DaoException("Error updating student: " + student.getStudentPersonalNumber(), e);
+                if (e.getErrorCode() == 547) {
+                    throw new DaoException("Please enter a valid personal number and email", e);
+                } else {
+                    throw new DaoException("Error updating student: " + student.getStudentPersonalNumber(), e);
+                }
             }
      }
 

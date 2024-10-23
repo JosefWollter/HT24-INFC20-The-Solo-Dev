@@ -63,6 +63,9 @@ public class StudiesViewController {
     @FXML
     private Label labelErrorMessage;
 
+    @FXML
+    private Label labelStudiesCourseCode;
+
     private StudyDao studyDao;
 
     private Course course;
@@ -97,8 +100,11 @@ public class StudiesViewController {
 
             StudentDao studentDao = new StudentDao();
             Student student = studentDao.getStudentByNumber(studentPersonalNumber);
+            if(student == null) {
+                displayErrorMessage("Student not found");
+                return;
+            }
             Study study = new Study(student, this.course, grade);
-
             studyDao.save(study);
 
             loadStudies();
@@ -116,10 +122,14 @@ public class StudiesViewController {
 
         try {
             Study study = tableViewStudies.getSelectionModel().getSelectedItem();
+            if(study == null) {
+                displayErrorMessage("No student selected");
+                return;
+            }
             studyDao.delete(study.getStudent().getStudentPersonalNumber(), study.getCourse().getCourseCode());
             loadStudies();
         } catch (DaoException e) {
-            displayErrorMessage("Error deleting study: " + e.getMessage());
+            displayErrorMessage("Error removing student: " + e.getMessage());
         }
     }
 
@@ -129,6 +139,12 @@ public class StudiesViewController {
 
         try {
             Study study = tableViewStudies.getSelectionModel().getSelectedItem();
+
+            if(study == null) {
+                displayErrorMessage("No student selected");
+                return;
+            }
+
             study.setGrade(textFieldStudiesGrade.getText());
 
             studyDao.update(study);
@@ -166,6 +182,7 @@ public class StudiesViewController {
             ObservableList<Study> observableStudies = FXCollections.observableArrayList(studies);
             tableViewStudies.setItems(observableStudies);
             textFieldStudiesStudentPersonalNumber.setEditable(true);
+            labelStudiesCourseCode.setText("Students studying " + course.getCourseCode() + ":");
         } catch (DaoException e) {
             e.printStackTrace();
             displayErrorMessage("Error loading studies: " + e.getMessage());   

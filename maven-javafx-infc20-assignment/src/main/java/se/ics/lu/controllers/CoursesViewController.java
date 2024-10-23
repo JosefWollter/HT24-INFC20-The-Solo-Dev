@@ -137,6 +137,11 @@ public class CoursesViewController {
             String newName = textFieldCourseName.getText();
             Double newCredits = Double.parseDouble(textFieldCourseCredits.getText());
 
+            if(course == null){
+                displayErrorMessage("Please select a course to update");
+                return;
+            }
+
             if(newName.isEmpty() || newCredits == 0){
                 displayErrorMessage("Please fill in all fields when updating");
                 return;

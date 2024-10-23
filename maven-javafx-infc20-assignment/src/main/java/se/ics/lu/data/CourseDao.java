@@ -67,6 +67,8 @@ public class CourseDao {
         } catch (SQLException e){
             if(e.getErrorCode() == 2627){
                 throw new DaoException("Course with course code: " + course.getCourseCode() + " already exists", e);
+            } else if(e.getErrorCode() == 547){
+                throw new DaoException("Please enter a valid course code", e);
             } else {
             throw new DaoException("Error while saving course", e);
             }
@@ -97,7 +99,11 @@ public class CourseDao {
 
                 statement.executeUpdate();
         } catch (SQLException e){
-            throw new DaoException("Error while deleting course: " + courseCode, e);
+            if(e.getMessage().contains("Course has students")){
+                throw new DaoException("You may not delete a course that has students enrolled", e);
+            } else {
+                throw new DaoException("Error while deleting course: " + courseCode, e);
+            }
         }
     }
 
