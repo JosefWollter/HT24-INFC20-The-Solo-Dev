@@ -88,6 +88,11 @@ public class StudentsViewController {
             String studentName = textFieldStudentName.getText();
             String studentEmail = textFieldStudentEmail.getText();
 
+            if(studentPersonalNumber.isEmpty() || studentName.isEmpty() || studentEmail.isEmpty()){
+                displayErrorMessage("Please fill in all fields when adding a student");
+                return;
+            }
+
             Student student = new Student(studentPersonalNumber, studentName, studentEmail);
 
             studentDao.save(student);
@@ -106,6 +111,10 @@ public class StudentsViewController {
     private void btnStudentDelete_OnClick(MouseEvent event){
         try{
             Student student = tableViewStudent.getSelectionModel().getSelectedItem();
+            if (student == null){
+                displayErrorMessage("Please select a student to delete");
+                return;
+            }
             studentDao.deleteByNo(student.getStudentPersonalNumber());
             loadStudents();
         } catch (DaoException e){

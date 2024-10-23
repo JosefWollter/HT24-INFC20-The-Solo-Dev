@@ -87,10 +87,10 @@ public class StudyDao {
                     statement.setString(2, study.getCourse().getCourseCode());
                     statement.execute();
             } catch (SQLException e){
-                if(e.getErrorCode() == 2627){
+                if(e.getErrorCode() == 50000) {
                     throw new DaoException("The student already studies this course", e);
                 }
-                throw new DaoException("Error while saving study", e);
+                throw new DaoException("Error enrolling student", e);
             }
         }
 

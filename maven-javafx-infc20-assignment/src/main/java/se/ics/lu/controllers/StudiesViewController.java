@@ -97,6 +97,10 @@ public class StudiesViewController {
         try {
             String studentPersonalNumber = textFieldStudiesStudentPersonalNumber.getText();
             String grade = textFieldStudiesGrade.getText();
+            if(studentPersonalNumber.isEmpty()) {
+                displayErrorMessage("Please fill in student personal number");
+                return;
+            }
 
             StudentDao studentDao = new StudentDao();
             Student student = studentDao.getStudentByNumber(studentPersonalNumber);
@@ -110,9 +114,9 @@ public class StudiesViewController {
             loadStudies();
             clearTextFields();
         } catch (DaoException e) {
-            displayErrorMessage("Error adding study: " + e.getMessage());
+            displayErrorMessage("Error enrolling student: " + e.getMessage());
         } catch (IOException e) {
-            displayErrorMessage("Error adding study: " + e.getMessage());
+            displayErrorMessage("Error enrolling student: " + e.getMessage());
         }
     }
 

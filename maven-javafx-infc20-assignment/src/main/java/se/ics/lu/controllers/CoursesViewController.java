@@ -105,6 +105,11 @@ public class CoursesViewController {
             String courseName = textFieldCourseName.getText();
             Double courseCredits = Double.parseDouble(textFieldCourseCredits.getText());
 
+            if(courseCode.isEmpty() || courseName.isEmpty() || courseCredits == 0){
+                displayErrorMessage("Please fill in all fields when adding a course");
+                return;
+            }
+
             Course course = new Course(courseCode, courseName, courseCredits);
 
             courseDao.save(course);
@@ -116,6 +121,8 @@ public class CoursesViewController {
             textFieldCourseCredits.clear();
         } catch (DaoException e){
             displayErrorMessage(e.getMessage());
+        } catch (NumberFormatException e){
+            displayErrorMessage("Please enter a valid number for credits");
         }
     }
 
@@ -123,6 +130,10 @@ public class CoursesViewController {
     private void btnCourseDelete_OnClick(MouseEvent event){
         try{
             Course course = tableViewCourse.getSelectionModel().getSelectedItem();
+            if(course == null){
+                displayErrorMessage("Please select a course to delete");
+                return;
+            }
             courseDao.deleteByCourseCode(course.getCourseCode());
             loadCourses();
         } catch (DaoException e){
@@ -134,13 +145,12 @@ public class CoursesViewController {
     private void btnCourseUpdate_OnClick(MouseEvent event) {
         try{
             Course course = tableViewCourse.getSelectionModel().getSelectedItem();
-            String newName = textFieldCourseName.getText();
-            Double newCredits = Double.parseDouble(textFieldCourseCredits.getText());
-
             if(course == null){
                 displayErrorMessage("Please select a course to update");
                 return;
             }
+            String newName = textFieldCourseName.getText();
+            Double newCredits = Double.parseDouble(textFieldCourseCredits.getText());
 
             if(newName.isEmpty() || newCredits == 0){
                 displayErrorMessage("Please fill in all fields when updating");
@@ -159,6 +169,8 @@ public class CoursesViewController {
             textFieldCourseCode.setEditable(true);
         } catch (DaoException e){
             displayErrorMessage(e.getMessage());
+        } catch (NumberFormatException e) {
+            displayErrorMessage("Please enter a valid number for credits");
         }
     }
 
