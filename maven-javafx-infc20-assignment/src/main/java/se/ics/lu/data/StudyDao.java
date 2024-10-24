@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import se.ics.lu.data.StudentDao;
 import se.ics.lu.models.Course;
 import se.ics.lu.models.Student;
 import se.ics.lu.models.Study;
@@ -18,23 +17,6 @@ public class StudyDao {
      public StudyDao() throws IOException {
          this.connectionHandler = new ConnectionHandler();
      }
-
-        public List<Study> getAllStudies(){
-            String callProcedure = "{CALL uspGetAllStudies}";
-            List<Study> studies = new ArrayList<>();
-    
-            try (Connection connection = connectionHandler.getConnection();
-                CallableStatement statement = connection.prepareCall(callProcedure);
-                ResultSet resultSet = statement.executeQuery()) {
-    
-                while (resultSet.next()){
-                    studies.add(mapToStudy(resultSet));
-                }
-            } catch (SQLException e) {
-                throw new DaoException("Error while fetching all studies", e);
-            }
-            return studies;
-        }
 
         public List<Study> getStudiesByCourse(String courseCode) {
             String callProcedure = "{CALL uspGetStudiesByCourseCode(?)}";
@@ -55,27 +37,6 @@ public class StudyDao {
             }
 
             return studies;
-        }
-
-        public Study getStudy(String studentPersonalNumber, String courseCode){
-            String callProcedure = "{CALL uspGetStudy(?,?)}";
-
-            try(Connection connection = connectionHandler.getConnection();
-                CallableStatement statement = connection.prepareCall(callProcedure)){
-                    statement.setString(1, studentPersonalNumber);
-                    statement.setString(2, courseCode);
-
-                    try (ResultSet resultSet = statement.executeQuery()){
-                        if(resultSet.next()){
-                            return mapToStudy(resultSet);
-                        } else {
-                            return null;
-                        }
-                    }
-                } catch (SQLException e){
-                    throw new DaoException("Error fetching study with student personal number: " 
-                                        + studentPersonalNumber + " and course code: " + courseCode, e);
-                }
         }
 
         public void save(Study study){
