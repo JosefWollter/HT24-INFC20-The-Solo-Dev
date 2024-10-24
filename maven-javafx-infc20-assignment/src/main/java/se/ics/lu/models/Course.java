@@ -42,4 +42,16 @@ public class Course {
     public List<Study> getStudies() {
         return studies;
     }
+
+    public void setStudies(List<Study> studies) {
+        this.studies = studies;
+    }
+
+    public void addStudy(Study study) {
+        studies.add(study);
+    }
+
+    public void removeStudy(Study study) {
+        studies.remove(study);
+    }
 }

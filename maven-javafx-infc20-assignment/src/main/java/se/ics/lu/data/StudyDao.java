@@ -89,8 +89,9 @@ public class StudyDao {
             } catch (SQLException e){
                 if(e.getErrorCode() == 50000) {
                     throw new DaoException("The student already studies this course", e);
-                }
+                } else {
                 throw new DaoException("Error enrolling student", e);
+                }
             }
         }
 
@@ -104,7 +105,11 @@ public class StudyDao {
                     statement.setString(3, study.getGrade());
                     statement.execute();
             } catch (SQLException e){
-                throw new DaoException("Error while updating study", e);
+                if (e.getErrorCode() == 50000) {
+                    throw new DaoException("Please enter a grade between A-F", e);
+                } else {
+                    throw new DaoException("Error while updating study", e);
+                }
             }
         }
 
